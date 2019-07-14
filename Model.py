@@ -15,6 +15,3 @@ class QNetwork(nn.Module):
         x = F.relu(self.fc1(state))
         x = F.relu(self.fc2(x))
         return self.fc3(x)
-
-x = QNetwork(1,4,1)
-print(x)
