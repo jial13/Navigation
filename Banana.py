@@ -44,6 +44,8 @@ agent = Agent(BUFFER_SIZE, BATCH_SIZE, GAMMA, TAU, LR, UPDATE_EVERY, state_size,
 
 
 def dqn(n_episodes=2000, max_t=1000, eps_start=1.0, eps_end=0.01, eps_decay=0.995):
+
+
     training_scores = []  # list containing scores from each episode
     scores_window = deque(maxlen=100)  # last 100 scores
     eps = eps_start  # initialize epsilon
@@ -68,11 +70,13 @@ def dqn(n_episodes=2000, max_t=1000, eps_start=1.0, eps_end=0.01, eps_decay=0.99
         print('\rEpisode {}\tAverage Score: {:.2f}'.format(i_episode, np.mean(scores_window)), end="")
         if i_episode % 100 == 0:
             print('\rEpisode {}\tAverage Score: {:.2f}'.format(i_episode, np.mean(scores_window)))
+            torch.save(agent.QNetwork_local.state_dict(), 'checkpoint.pth')
         if np.mean(scores_window) >= 200.0:
             print('\nEnvironment solved in {:d} episodes!\tAverage Score: {:.2f}'.format(i_episode - 100,
                                                                                          np.mean(scores_window)))
-            torch.save(agent.QNetwork_local.state_dict(), 'checkpoint.pth')
+            torch.save(agent.QNetwork_local.state_dict(), 'solved.pth')
             break
+    torch.save(agent.QNetwork_local.state_dict(), 'trained_final.pth')
     return training_scores
 
 
